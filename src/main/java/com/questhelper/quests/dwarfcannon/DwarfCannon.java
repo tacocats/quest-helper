@@ -22,17 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.YOUR_QUEST_FOLDER;
+package com.questhelper.quests.dwarfcannon;
+
+import com.questhelper.QuestDescriptor;
+import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.steps.*;
+import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.steps.conditional.Conditions;
+import com.questhelper.steps.conditional.ItemRequirementCondition;
+import com.questhelper.steps.conditional.ZoneCondition;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.YOUR_QUEST
+        quest = QuestHelperQuest.DWARF_CANNON
 )
-public class YOURQUESTFILENAME extends BasicQuestHelper
-{
-    ItemRequirement sampleRequirement;
+public class DwarfCannon extends BasicQuestHelper {
+    ItemRequirement hammer;
     Zone sampleZone;
     ConditionForStep sampleCondition;
-    QuestStep sampleStep;
+    QuestStep talkToLawgof;
+
+    // TODO - Above reqs, zones, conditions, steps
 
     @Override
     public Map<Integer, QuestStep> loadSteps()
@@ -49,7 +70,7 @@ public class YOURQUESTFILENAME extends BasicQuestHelper
 
     public void setupItemRequirements()
     {
-        sampleRequirement = new ItemRequirement("Bucket", ItemID.BUCKET);
+        hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
     }
 
     public void setupZones()
@@ -64,13 +85,13 @@ public class YOURQUESTFILENAME extends BasicQuestHelper
 
     public void setupSteps()
     {
-        sampleStep = new DetailedQuestStep(this, "Talk to Hans in Lumbridge", sampleRequirement);
+        talkToLawgof = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(3443, 3258, 0), "Talk to Captain Lawgof by the Coal truck mining site west of Seers' Village.");
     }
 
     @Override
     public ArrayList<ItemRequirement> getItemRequirements()
     {
-        return new ArrayList<>(Arrays.asList(sampleRequirement));
+        return new ArrayList<>(Arrays.asList(hammer));
     }
 
     @Override
@@ -86,21 +107,11 @@ public class YOURQUESTFILENAME extends BasicQuestHelper
     }
 
     @Override
-    public ArrayList<String> getCombatRequirements()
-    {
-        return new ArrayList<>(Collections.singletonList("Big scary monster (level 200)"));
-    }
-
-    @Override
     public ArrayList<PanelDetails> getPanels()
     {
         ArrayList<PanelDetails> allSteps = new ArrayList<>();
-        allSteps.add(new PanelDetails("The section's header!", new ArrayList<>(Arrays.asList(sampleStep)), sampleRequirement));
+        //allSteps.add(new PanelDetails("Getting Started", new ArrayList<>(Arrays.asList(sampleStep)), sampleRequirement));
+        allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToLawgof, pickpocketZealot)), combatGear));
         return allSteps;
     }
-}
-
-package com.questhelper.quests.dwarfcannon;
-
-public class DwarfCannon {
 }
